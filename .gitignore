@@ -1,0 +1,22 @@
+# Build and Release Folders
+bin-debug/
+bin-release/
+[Oo]bj/
+[Bb]in/
+dist/
+
+# Other files and folders
+.settings/
+node_modules/
+.vscode/
+.gitee/
+# Executables
+*.swf
+*.air
+*.ipa
+*.apk
+设置开机启动(相对路径).bat
+
+# Project files, i.e. `.project`, `.actionScriptProperties` and `.flexProperties`
+# should NOT be excluded as they contain compiler settings and other important
+# information for Eclipse / Flash Builder.
