@@ -57,7 +57,7 @@ The project is open source, welcome to contribute: [https://gitee.com/wangwangqi
 </figure>
 
 ### Installation Steps
-1. Download the zip file: [https://gitee.com/wangwangqin523/file-vue/raw/master/fileVue.zip](https://gitee.com/wangwangqin523/file-vue/raw/master/fileVue.zip)
+1. On Windows system，download the zip file: [fileVue-win-x64.zip](https://gitee.com/wangwangqin523/file-vue/raw/master/fileVue-win-x64.zip)
 2. Place `FileVue.exe`, `config.js`, and the `public` folder in the same directory
 3. Double-click to run `FileVue.exe`
 4. Open your browser and visit `http://localhost:8888`

@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GGB编辑 - 文件视界</title>
+    <link rel="stylesheet" href="../css/bootstrap4.min.css">
+    <link rel="stylesheet" href="../css/fileVue.css">
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="shortcut icon" href="../images/ggblogo.ico" type="image/x-icon">
+    <script src="./GeoGebra/deployggb.js"></script>
+    <script src="../js/filevue.js"></script>
+    <style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: auto;
+        }
+
+
+
+
+        /* loading动画 */
+        .sk-spinner-pulse {
+            position: absolute;
+            /* transform: translate(-50%, -50%); */
+            width: 150px;
+            height: 150px;
+            background-color: #1ab394;
+            border-radius: 100%;
+            -webkit-animation: sk-pulseScaleOut 1s infinite ease-in-out;
+            animation: sk-pulseScaleOut 1s infinite ease-in-out;
+        }
+
+        @-webkit-keyframes sk-pulseScaleOut {
+            0% {
+                -webkit-transform: scale(0);
+                transform: scale(0);
+            }
+
+            100% {
+                -webkit-transform: scale(1);
+                transform: scale(1);
+                opacity: 0;
+            }
+        }
+
+        @keyframes sk-pulseScaleOut {
+            0% {
+                -webkit-transform: scale(0);
+                transform: scale(0);
+            }
+
+            100% {
+                -webkit-transform: scale(1);
+                transform: scale(1);
+                opacity: 0;
+            }
+        }
+
+        #loading {
+            position: absolute;
+            /* 修改：从 fixed 改为 absolute */
+            z-index: 99999;
+        }
+
+        /* 调整ggb容器 */
+        .ggb-container {
+            /* flex: 1; */
+            width: 85%;
+            /* 调整宽度 */
+            margin: auto;
+            aspect-ratio: 128/72;
+            position: relative;
+            padding: 0;
+            overflow: hidden;
+            display: flex;
+            /* 新增：启用Flexbox布局 */
+            justify-content: center;
+            /* 新增：水平居中 */
+            align-items: center;
+            /* 新增：垂直居中 */
+            border: 3px solid #007BFF;
+            /* 修改：使用主题色 */
+            border-radius: 12px;
+            /* 新增：圆角 */
+            box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+            /* 新增：阴影 */
+            transition: border-color 0.3s ease;
+            /* 新增：过渡效果 */
+
+        }
+
+        /* 添加媒体查询 */
+        @media (min-width: 1500px) {
+            .ggb-container {
+                width: 1280px;
+                /* 当屏幕宽度 <= 1500px 时设置固定宽度 */
+            }
+        }
+
+        #ggb-element {
+            position: relative;
+            /* 修改：从absolute改为relative */
+            /* 移除原有的定位样式 */
+
+        }
+
+
+
+
+        /* 新增布局容器样式 */
+        /* .main-container {
+            display: flex;
+            
+        } */
+
+        /* 文件目录容器 */
+        .file-list-container {
+            width: 300px;
+            height: 100vh;
+            position: fixed;
+            left: -300px;
+            top: 0;
+            overflow: auto;
+            border-right: 1px solid #ddd;
+            background-color: #fff;
+            transition: left 0.3s ease;
+            z-index: 1000;
+            font-size: 12px;
+
+        }
+
+        .file-list-container.show {
+            left: 0;
+        }
+
+        /* 切换按钮 */
+        .toggle-btn {
+            position: fixed;
+            left: 5px;
+            top: 150px;
+            z-index: 1001;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.3);
+            /* 半透明背景 */
+            border: 1px solid rgba(221, 221, 221, 0.3);
+            /* 更透明的边缘 */
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: 50px;
+            /* 更大的宽度 */
+            height: 50px;
+            /* 更大的高度 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .toggle-btn:active {
+            transform: scale(0.95);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .toggle-btn.active {
+            background-color: rgba(0, 123, 255, 0.3);
+            /* 半透明主题色 */
+            color: #fff;
+            border-color: rgba(0, 123, 255, 0.3);
+            /* 半透明主题色 */
+        }
+
+
+        /* 添加以下样式 */
+        #current-file-title {
+            margin-bottom: 1.25rem;
+            /* 20px */
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- 导航栏 -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">
+            <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                <!-- 文件夹主体 -->
+                <path d="M5 10h30v25H5z" fill="#007BFF" stroke="#0056b3" stroke-width="1" />
+                <!-- 文件夹顶部 -->
+                <path d="M5 10h30l-5-5H10z" fill="#F8F9FA" stroke="#0056b3" stroke-width="1" />
+                <!-- 放大镜 -->
+                <g transform="translate(25 25)">
+                    <circle cx="0" cy="0" r="6" fill="none" stroke="#FFA500" stroke-width="2" />
+                    <line x1="4" y1="4" x2="8" y2="8" stroke="#FFA500" stroke-width="2" stroke-linecap="round" />
+                </g>
+                <!-- 文件图标 -->
+                <g transform="translate(10 15)">
+                    <rect x="0" y="0" width="12" height="16" fill="#fff" stroke="#007BFF" stroke-width="1" />
+                    <line x1="0" y1="4" x2="12" y2="4" stroke="#007BFF" stroke-width="1" />
+                    <line x1="0" y1="8" x2="8" y2="8" stroke="#007BFF" stroke-width="1" />
+                </g>
+            </svg>
+            <span style="margin-left: 10px;">文件视界</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">首页</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./upload.html">上传文件</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./ggb/GeoGebra/HTML5/5.0/GeoGebra.html" target="_blank">GGB编辑</a>
+                </li>
+
+            </ul>
+        </div>
+    </nav>
+
+    <!-- 新增标题显示 -->
+    <div id="current-file-title" class="mx-auto text-center text-primary font-weight-bold" style="font-size: 2rem;">
+    </div>
+    <!-- <div id="ggb-element" style="margin:auto"></div> -->
+    <div class="main-container">
+        <!-- 左侧文件目录 -->
+        <div class="file-list-container bg-light">
+            <div id="fileListContainer" class="p-3">
+                <!-- 使用 Bootstrap 样式美化文件列表 -->
+            </div>
+        </div>
+
+        <!-- 切换按钮 -->
+        <div class="toggle-btn" onclick="toggleFileList()">☰</div>
+
+        <!-- 新增：工具栏切换按钮 -->
+        <div class="toggle-btn" style="right: 2%; left: auto;" onclick="toggleToolBar()">🔧</div>
+
+        <div class="ggb-container">
+            <div id="loading" class="sk-spinner-pulse"></div>
+            <div id="ggb-element"></div>
+        </div>
+    </div>
+
+    <!-- 引入 Bootstrap 4 JS 和依赖 -->
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/bootstrap4.min.js"></script>
+    <script>
+        //GeoGebra Apps API参考：https://geogebra.github.io/integration/basic-embedding-options.html
+        //GeoGebra App Parameters参考：https://geogebra.github.io/docs/reference/en/GeoGebra_App_Parameters/
+        const queryString = location.search; // "?path=/mydisk/file-browser/public/ggb/test.ggb"
+
+        // 解析查询字符串为URLSearchParams对象
+        const queryParams = new URLSearchParams(queryString);
+        let ggbFilePath = queryParams.has('path') ? queryParams.get('path') : ""; // 添加错误处理
+        //let viewportWidth = window.innerWidth; // 视口宽度
+        //let viewportHeight = window.innerHeight; // 视口高度
+        let ggbAppletConfig = {
+            "appName": "classic",
+            "scaleContainerClass": "ggb-container", // 更新容器类名
+            "showToolBar": false,
+            "showAlgebraInput": false,
+            "showMenuBar": false,
+            "filename": ggbFilePath,
+            //应用高与宽
+            "width": 1280,
+            "height": 720,
+            "borderColor": "#3c3c3c",
+            "showFullscreenButton": true,
+            showResetIcon: true,
+            enableRightClick: false,
+
+        };
+
+        // 封装初始化GGBApplet的函数
+        function initGGBApplet(config) {
+            let applet = new GGBApplet(config, true);
+            applet.setHTML5Codebase('./GeoGebra/HTML5/5.0/web3d/');
+            applet.inject('ggb-element', 'html5');
+            document.getElementById('loading').style.display = 'block';
+            // 更新标题显示
+            updateTitle(config.filename);
+            observe();
+            console.log('Height:', window.innerHeight, 'Width:', window.innerWidth);
+            return applet;
+        }
+
+        // 新增：更新标题函数
+        function updateTitle(filePath) {
+            const titleElement = document.getElementById('current-file-title');
+            if (filePath) {
+                const fileName = filePath.split('/').pop();
+                titleElement.textContent = `${fileName}`;
+            } else {
+                titleElement.textContent = '未选择文件';
+            }
+        }
+
+        window.addEventListener("DOMContentLoaded", function () {
+
+            fileVue.setConfig({
+                showHeader: false,
+                showDate: false,
+                showDownload: false,
+                initialPath: '/ggb/ggbResources',
+            });
+            fileVue.handleFileClick = function (item) {
+                const extension = item.name.split('.').pop().toLowerCase();
+                if (extension === 'ggb') {
+                    let name = item.path;
+                    ggbAppletConfig.filename = name;
+                    initGGBApplet(ggbAppletConfig);
+                }
+            }
+            initGGBApplet(ggbAppletConfig);
+            let checkApplet = setInterval(function () {
+                if (typeof ggbApplet !== 'undefined' && ggbApplet.getWidth) {
+                    clearInterval(checkApplet);
+
+                    // Add resize handler after applet is ready
+                    window.addEventListener("resize", function () {
+                        let scale = Math.min(
+                            window.innerWidth / ggbApplet.getWidth(),
+                            window.innerHeight / ggbApplet.getHeight()
+                        );
+                        document.getElementById('ggb-element').style.transform = `scale(${scale})`;
+                    });
+                }
+            }, 100);
+        });
+
+
+
+        // 切换文件列表显示状态
+        function toggleFileList() {
+            const fileList = document.querySelector('.file-list-container');
+            const toggleBtn = document.querySelector('.toggle-btn');
+            fileList.classList.toggle('show');
+            toggleBtn.classList.toggle('active'); // 切换 active 类
+        }
+        // 新增：点击外部区域隐藏文件列表
+        document.addEventListener('click', function(event) {
+            const fileList = document.querySelector('.file-list-container');
+            const toggleBtn = document.querySelector('.toggle-btn');
+            
+            // 如果点击的不是文件列表区域或切换按钮，且文件列表是可见的
+            if (!fileList.contains(event.target) && !toggleBtn.contains(event.target) && fileList.classList.contains('show')) {
+                fileList.classList.remove('show');
+                toggleBtn.classList.remove('active');
+            }
+        });
+        
+        // 阻止文件列表区域内的点击事件冒泡
+        document.querySelector('.file-list-container').addEventListener('click', function(event) {
+            event.stopPropagation();
+        });
+
+        // 新增：切换工具栏显示状态的函数
+        function toggleToolBar() {
+            if (typeof ggbApplet !== 'undefined') {
+                const isToolBarVisible = !ggbAppletConfig.showToolBar;
+                ggbAppletConfig.showToolBar = isToolBarVisible;
+                ggbAppletConfig.showAlgebraInput = isToolBarVisible;
+                ggbAppletConfig.showMenuBar = isToolBarVisible;
+                ggbAppletConfig.enableRightClick = isToolBarVisible;
+
+                // 重新初始化 GGBApplet
+                initGGBApplet(ggbAppletConfig);
+            }
+        }
+        // MutationObserver 接口提供了监视对 DOM 树所做更改的能力。
+        let target = document.body;
+        let loading = document.getElementById('loading');
+        function observe() {
+
+            let observer = new MutationObserver(() => {
+
+                // console.log(document.getElementsByClassName('MyCanvasButton').length);
+                if (document.getElementsByClassName('EuclidianPanel').length != 0) {
+                    loading.setAttribute('style', 'display:none');
+                    observer.disconnect();
+                }
+
+
+            });
+            observer.observe(target, {
+                attributes: true, // 布尔值，默认为 false。设置为 true 时，表示观察目标节点的属性变化。
+                childList: true, //布尔值，默认为 false。设置为 true 时，表示观察目标节点的子节点列表的变化，包括添加或删除子节点。
+                characterData: true, // 布尔值，默认为 false。设置为 true 时，表示观察目标节点文本内容的变化
+                subtree: true,// 布尔值，默认为 false。设置为 true 时，表示观察目标节点以及其所有后代节点的变化。
+                attributeOldValue: true,// 布尔值，默认为 false。如果设置为 true，则在回调函数的 MutationRecord 对象中包含被修改属性的旧值。
+            });
+        }
+        //observe()   
+    </script>
+    <!-- 页脚 -->
+    <footer>
+        <div class="container">
+            <span class="text-muted">© 2025 303218145@qq.com</span>
+        </div>
+    </footer>
+
+
+    </div>
+</body>
+
+</html>

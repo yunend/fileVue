@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文件视界</title>
+    <link rel="shortcut icon" href="../images/logo.ico" type="image/x-icon">
+    <link rel="stylesheet" href="./css/bootstrap4.min.css">
+    <link rel="stylesheet" href="./css/fileVue.css">
+    <link rel="stylesheet" href="./css/common.css">
+   
+   
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">
+            <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                <!-- 文件夹主体 -->
+                <path d="M5 10h30v25H5z" fill="#007BFF" stroke="#0056b3" stroke-width="1"/>
+                <!-- 文件夹顶部 -->
+                <path d="M5 10h30l-5-5H10z" fill="#F8F9FA" stroke="#0056b3" stroke-width="1"/>
+                <!-- 放大镜 -->
+                <g transform="translate(25 25)">
+                    <circle cx="0" cy="0" r="6" fill="none" stroke="#FFA500" stroke-width="2"/>
+                    <line x1="4" y1="4" x2="8" y2="8" stroke="#FFA500" stroke-width="2" stroke-linecap="round"/>
+                </g>
+                <!-- 文件图标 -->
+                <g transform="translate(10 15)">
+                    <rect x="0" y="0" width="12" height="16" fill="#fff" stroke="#007BFF" stroke-width="1"/>
+                    <line x1="0" y1="4" x2="12" y2="4" stroke="#007BFF" stroke-width="1"/>
+                    <line x1="0" y1="8" x2="8" y2="8" stroke="#007BFF" stroke-width="1"/>
+                </g>
+            </svg>
+            <span style="margin-left: 10px;">文件视界</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">首页</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./upload.html">上传文件</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./ggb/GeoGebra/HTML5/5.0/GeoGebra.html" target="_blank">GGB编辑</a>
+                </li>
+            </ul>
+            <!-- 添加“关于”按钮 -->
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#" data-toggle="modal" data-target="#aboutModal">关于</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- 添加“关于”模态框 -->
+    <div class="modal fade" id="aboutModal" tabindex="-1" role="dialog" aria-labelledby="aboutModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="aboutModalLabel">关于</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>FileVue版本：2.0.0</p>
+                    <p>© 2025 303218145@qq.com</p>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 主体内容 -->
+    <div class="container main-content mt-4">
+        <div class="row">
+            <!-- 左侧导航栏 -->
+            <div class="col-md-3">
+                <div class="list-group">
+                    <button type="button" class="list-group-item list-group-item-action" 
+                            onclick="fileVue.loadDirectory('课件')">
+                        课件
+                    </button>
+                    <button type="button" class="list-group-item list-group-item-action" 
+                            onclick="fileVue.loadDirectory('/ggb/ggbResources')">
+                        GGB文件
+                    </button>
+                    <button type="button" class="list-group-item list-group-item-action" 
+                            onclick="fileVue.loadDirectory('/资源')">
+                        资源
+                    </button>
+                    <button type="button" class="list-group-item list-group-item-action" 
+                            onclick="fileVue.loadDirectory('/视频')">
+                        视频
+                    </button>
+                    <button type="button" class="list-group-item list-group-item-action" 
+                            onclick="fileVue.loadDirectory('/文档')">
+                        文档
+                    </button>
+                </div>
+            </div>
+            <!-- 右侧文件列表 -->
+            <div class="col-md-9">
+                <!-- <div id="fileListHeader"></div>  -->
+                <!-- 添加这个容器 -->
+                <!-- <div class="row">
+                    <div class="col">
+                        <div id="fileListContainer">
+                            <ul id="fileList" class="list-unstyled"></ul>
+                        </div>
+                    </div>
+                </div> -->
+                <!-- <ul id="fileList" class="list-unstyled"></ul> -->
+                 <div id="fileListContainer">
+                   
+            </div>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="container">
+            <span class="text-muted">© 2025 303218145@qq.com</span>
+        </div>
+    </footer>
+
+    <script src="./js/jquery.min.js"></script>
+    <script src="./js/bootstrap4.min.js"></script>
+    <script src="./js/fileVue.js"></script>
+</body>
+</html>

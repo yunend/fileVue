@@ -1,0 +1,106 @@
+/* 新增：左侧导航栏按钮字体放大 */
+.list-group-item {
+    font-size: 2rem; /* 原字体大小的两倍 */
+}
+/* 新增：导航栏对齐样式 */
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+.navbar-nav {
+    align-items: center;
+}
+.navbar-nav .nav-link {
+    padding: 0.75rem 1.5rem;
+    color: #2c3e50 !important; /* 使用 !important 确保优先级 */
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    margin: 0 4px;
+}
+
+.nav-link {
+   font-size: 1.5rem;
+   color: inherit; /* 继承父元素颜色 */
+}
+
+.navbar-nav .nav-link:hover {
+    color: #e74c3c; /* 悬停时使用红色，增加视觉冲击 */
+    background-color: rgba(231, 76, 60, 0.1); /* 浅红色背景 */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-nav .nav-link.active {
+    color: #27ae60; /* 激活状态使用绿色，表示选中 */
+    background-color: rgba(39, 174, 96, 0.1); /* 浅绿色背景 */
+    font-weight: 700;
+}
+.nav-link {
+   font-size:1.5rem 
+}
+
+.list-group-item {
+    margin-bottom: 5px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.list-group-item:hover {
+    background-color: #007bff;
+    color: white;
+    transform: translateX(5px);
+}
+
+.sort-link {
+    cursor: pointer;
+    user-select: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.sort-link:hover {
+    background-color: #f8f9fa;
+}
+
+.sort-link.active {
+    font-weight: bold;
+    color: #007bff;
+}
+
+/* 修改页脚样式 */
+footer {
+    position: static; /* 改为静态定位 */
+    width: 100%;
+    background-color: #f8f9fa;
+    padding: 20px 0;
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* 修改文件列表容器样式 */
+/* #fileListContainer {
+    max-height: calc(100vh - 150px); 
+    overflow-y: auto;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+} */
+
+/* 添加主体内容容器样式 */
+.container.main-content {
+    min-height: calc(100vh - 150px); /* 确保内容区域足够高 */
+    padding-bottom: 60px; /* 为页脚留出空间 */
+}
+
+@media (min-width: 1200px) {
+    .container {
+        max-width: 1200px; /* 将默认的1140px改为更大的值 */
+    }
+}
+
+
+
+

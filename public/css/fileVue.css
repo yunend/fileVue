@@ -1,0 +1,87 @@
+.fv-item {
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 4px;
+    font-size: 1.5em; /* 新增：字体放大为原来的1.5倍 */
+}
+
+.fv-item:hover {
+    background-color: #f8f9fa;
+}
+
+.fv-secondary-text {
+    font-size: 0.875rem;
+    color: #6c757d;
+    margin-left: 1rem;
+    font-style: italic;
+    display: inline; /* 改为行内元素 */
+    margin-top: 0; /* 移除上边距 */
+}
+
+.fv-item {
+    padding: 0.75rem 1.25rem;
+    border-bottom: 1px solid #eee;
+    white-space: nowrap; /* 防止换行 */
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.fv-item:last-child {
+    border-bottom: none;
+}
+
+.fv-name {
+    font-weight: 500;
+    color: #212529;
+}
+
+.fv-name:hover {
+    color: #007bff;
+    text-decoration: underline;
+    transform: scale(1.02);
+}
+
+.fv-path-link {
+    color: #007bff;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.fv-path-link:hover {
+    text-decoration: underline;
+}
+
+.fv-download-link {
+    margin-left: 1rem;
+    color: #007bff;
+    text-decoration: none;
+}
+
+.fv-download-link:hover {
+    text-decoration: underline;
+}
+
+.fv-header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.fv-sort-buttons {
+    display: flex;
+    gap: 1rem;
+}
+
+.fv-sort-btn {
+    padding: 0.5rem 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.fv-sort-btn:hover {
+    background-color: #f8f9fa;
+}

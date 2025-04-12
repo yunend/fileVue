@@ -53,7 +53,7 @@
 </figure>
 
 ### 安装步骤
-1. 下载压缩包：[https://gitee.com/wangwangqin523/file-vue/raw/master/fileVue.zip](https://gitee.com/wangwangqin523/file-vue/raw/master/fileVue.zip)
+1. windows系统下，下载压缩包：[fileVue-win-x64.zip](https://gitee.com/wangwangqin523/file-vue/raw/master/fileVue-win-x64.zip)
 2. 将 `FileVue.exe`、`config.js` 文件与 `public` 文件夹放置在同一目录下
 3. 双击运行 `FileVue.exe`
 4. 打开浏览器，访问 `http://localhost:8888`
